@@ -8,48 +8,64 @@ namespace Travelling_Salesman_Problem___ACO
 {
     class Aco
     {
-        public int ant_population = 10;
-        public int city_count = 10;
+        public int ant_population = 10000;
+        public int city_count = 50;
         public double evaporation_coefficient = 0.5;
         public double initial_pheromone = 1;
 
         public Aco()
         {
-            List<City> cities = create_cities(city_count);
+            List<City> cities = create_cities();
             //write(cities);
 
-            List<Ant> ants = create_ants(ant_population);
+            List<Ant> ants = create_ants();
             //write(ants);
 
-            double[,] pheromones = initial_pheromones(city_count, initial_pheromone);
+            double[,] pheromones = initial_pheromones();
             //write(pheromones, city_count);
 
             double[,] city_distances = calcute_distance(cities);
             //write(city_distances, city_count);
+   
+            List<double> ants_distance_covered = new List<double>();
+            List<int[]> ants_direction = new List<int[]>();
 
-            // rasgele şehirden başlayacak
-            // kümülatif olasılık ile rasgele yolu seçeçek
-            // geçtiği yolun feromen değeri değişecek
+           
+            int ant = 0;
+            while (ant < ant_population)
+            {
+                Console.WriteLine("___"+ant+"___");
+                walk(ants[ant], city_distances, pheromones, ants_distance_covered, ants_direction);
+                update_pheromones(pheromones, city_distances, ants_distance_covered[ant], ants_direction[ant]);
+                write(ants_direction[ant], ants_distance_covered[ant]);
+                Console.WriteLine();
+                write(pheromones, city_count);
+                Console.WriteLine();
+                Console.WriteLine("-------------------------------------");
+                ant++;
+            }
 
-            // gitiiği şehir listeye eklenecek oraya bir daha gidemeyecek ?
-
-
-
-
-
-
-
-
-
-
-
+            int max = 0;
+            int min = 0;
+            for (int i = 0; i < ants_distance_covered.Count; i++)
+            {
+                if (ants_distance_covered[i] == ants_distance_covered.Max())
+                    max = i;
+                else if (ants_distance_covered[i] == ants_distance_covered.Min())
+                    min = i;
+            }          
+            Console.Write("Max: " + ants_distance_covered.Max() + " /// ");
+            write(ants_direction[max].ToArray());
+            Console.WriteLine();
+            Console.Write("Min: " + ants_distance_covered.Min() + " /// ");
+            write(ants_direction[min].ToArray());
         }
 
-        List<City> create_cities(int city_count)
+        List<City> create_cities()
         {
             Random rnd = new Random();
             List<City> cities = new List<City>();
-            int id = 1;
+            int id = 0;
             City first_city = new City(rnd.Next(-500,500),rnd.Next(-500, 500),id);
             cities.Add(first_city);
             id++;
@@ -80,7 +96,7 @@ namespace Travelling_Salesman_Problem___ACO
             }
             return cities;
         }
-        List<Ant> create_ants(int ant_population)
+        List<Ant> create_ants()
         {
             Random rnd = new Random();
             List<Ant> ants = new List<Ant>();
@@ -90,14 +106,14 @@ namespace Travelling_Salesman_Problem___ACO
             }
             return ants;
         }   
-        double[,] initial_pheromones(int length,double value)
+        double[,] initial_pheromones()
         {
-            double[,] array = new double[length, length];
-            for (int i = 0; i < length; i++)
+            double[,] array = new double[city_count, city_count];
+            for (int i = 0; i < city_count; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (int j = 0; j < city_count; j++)
                 {
-                    array[i, j] = value;
+                    array[i, j] = initial_pheromone;
                 }
             }
             return array;
@@ -114,20 +130,102 @@ namespace Travelling_Salesman_Problem___ACO
             }
             return distances;
         }
+        void walk(Ant ant, double[,] city_distances, double[,] pheromones, List<double> ants_distance_covered, List<int[]> ants_direction)
+        {
+            Random rnd = new Random();
 
+            double distance_covered = 0;
 
+            List<int> direction = new List<int>();
 
+            int first_city = rnd.Next(0, city_count);
+            direction.Add(first_city); 
+            
+            for (int i = 0; i < city_count; i++)
+            {
+                first_city = direction.Last();
+                double[] cities_probability = calcute_probability(city_distances, pheromones, ant, first_city);
+                double[] cumulative = cumulative_sum(cities_probability);
+               
+                bool control = true;           
+                while (control)
+                {
+                    double random = rnd.NextDouble();
+                    int next_city = 0;
+                    for (int j = 0; j < cumulative.Length; j++)
+                    {
+                        if (random < cumulative[j])
+                        {
+                            next_city = j;
+                            break;
+                        }
+                    }
+                    if (!direction.Contains(next_city))
+                    {
+                        control = false;
+                        direction.Add(next_city);
+                        distance_covered += city_distances[first_city, next_city];
+                    }
+                    else
+                        control = true;
+                }
+                if (direction.Count == city_count-1)
+                {
+                    int[] temp = new int[city_count];
+                    for (int k = 0; k < direction.Count; k++)
+                    {
+                        temp[direction[k]]++;
+                    }
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        if (temp[j] == 0)
+                        {
+                            direction.Add(j);
+                            break;
+                        }
+                    }
+                    distance_covered += city_distances[direction[city_count - 2], direction[city_count-1]];
+                    break;
+                }              
+            }
+            ants_distance_covered.Add(distance_covered);
+            ants_direction.Add(direction.ToArray());
+        }
+        double[] calcute_probability(double[,] city_distances, double[,] pheromones,Ant ant,int index)
+        {
+            double[] probabilities = new double[city_count];
+            double total_probability = 0;
 
-
-
-
-
-
-
-
-
-
-
+            for (int i = 0; i < city_count; i++)
+            {
+                probabilities[i] = Math.Pow(pheromones[index, i], ant.alfa) * Math.Pow(city_distances[index, i], ant.beta);
+                total_probability += probabilities[i];
+            }
+            for (int i = 0; i < city_count; i++)
+            {
+                probabilities[i] /= total_probability;
+            }
+ 
+            return probabilities;
+        }
+        double[] cumulative_sum(double[] probability)
+        {
+            double[] cum = new double[probability.Length];
+            double toplam = 0;
+            for (int i = 0; i < probability.Length; i++)
+            {
+                toplam += probability[i];
+                cum[i] = toplam;
+            }
+            return cum;
+        }
+        void update_pheromones(double[,] pheromones, double[,] city_distances, double ants_distance_covered, int[] ants_direction)
+        {
+            for (int i = 0; i < ants_direction.Length-1; i++)
+            {
+                pheromones[ants_direction[i], ants_direction[i + 1]] = (1 - evaporation_coefficient) * pheromones[ants_direction[i], ants_direction[i + 1]] + city_distances[ants_direction[i], ants_direction[i + 1]] / ants_distance_covered;
+            }
+        }
 
 
 
@@ -158,19 +256,37 @@ namespace Travelling_Salesman_Problem___ACO
                 Console.WriteLine(ants[i].alfa + " / " + ants[i].beta);
             }
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        void write(List<double> list)
+        {
+            foreach(double d in list)
+                Console.WriteLine(d);
+        }
+        void write(List<int[]> list)
+        {
+            foreach(int[] array in list)
+            {
+                foreach(int i in array)
+                {
+                    Console.Write(i+" + ");
+                }
+                Console.WriteLine();
+            }
+        }
+        void write(int[] array,double value)
+        {
+            foreach (var item in array)
+            {
+                Console.Write(item+" - ");
+            }
+            Console.Write(" - "+value);
+            Console.WriteLine();
+        }
+        void write(int[] array)
+        {
+            foreach (var item in array)
+            {
+                Console.Write(item+" - ");
+            }
+        }
     }
 }
