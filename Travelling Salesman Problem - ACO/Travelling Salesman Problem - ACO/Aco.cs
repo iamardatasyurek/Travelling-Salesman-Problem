@@ -144,7 +144,7 @@ namespace Travelling_Salesman_Problem___ACO
             for (int i = 0; i < city_count; i++)
             {
                 first_city = direction.Last();
-                double[] cities_probability = calcute_probability(city_distances, pheromones, ant, first_city);
+                double[] cities_probability = calcute_probability(direction,city_distances, pheromones, ant, first_city);
                 double[] cumulative = cumulative_sum(cities_probability);
                
                 bool control = true;           
@@ -191,14 +191,17 @@ namespace Travelling_Salesman_Problem___ACO
             ants_distance_covered.Add(distance_covered);
             ants_direction.Add(direction.ToArray());
         }
-        double[] calcute_probability(double[,] city_distances, double[,] pheromones,Ant ant,int index)
+        double[] calcute_probability(List<int> direction,double[,] city_distances, double[,] pheromones,Ant ant,int index)
         {
             double[] probabilities = new double[city_count];
             double total_probability = 0;
 
             for (int i = 0; i < city_count; i++)
             {
-                probabilities[i] = Math.Pow(pheromones[index, i], ant.alfa) * Math.Pow(city_distances[index, i], ant.beta);
+                if (!direction.Contains(i))
+                    probabilities[i] = Math.Pow(pheromones[index, i], ant.alfa) * Math.Pow(city_distances[index, i], ant.beta);
+                else
+                    probabilities[i] = 0;
                 total_probability += probabilities[i];
             }
             for (int i = 0; i < city_count; i++)
@@ -288,5 +291,6 @@ namespace Travelling_Salesman_Problem___ACO
                 Console.Write(item+" - ");
             }
         }
+    
     }
 }
