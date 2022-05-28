@@ -8,10 +8,10 @@ namespace Travelling_Salesman_Problem___ACO
 {
     class Aco
     {
-        public int ant_population = 10000;
-        public int city_count = 50;
-        public double evaporation_coefficient = 0.5;
-        public double initial_pheromone = 1;
+        int ant_population = 10000;
+        int city_count = 50;
+        double evaporation_coefficient = 0.5;
+        double initial_pheromone = 1;
 
         public Aco()
         {
@@ -65,17 +65,15 @@ namespace Travelling_Salesman_Problem___ACO
         {
             Random rnd = new Random();
             List<City> cities = new List<City>();
-            int id = 0;
-            City first_city = new City(rnd.Next(-500,500),rnd.Next(-500, 500),id);
+            City first_city = new City(rnd.Next(-500,500),rnd.Next(-500, 500),0);
             cities.Add(first_city);
-            id++;
             for (int i = 1; i < city_count; i++)
             {
                 bool control = true;
                 int control_counter = 0;
                 while(control)
                 {
-                    City city = new City(rnd.Next(-500, 500), rnd.Next(-500, 500), id);
+                    City city = new City(rnd.Next(-500, 500), rnd.Next(-500, 500), i);
                     for (int j = 0; j < cities.Count; j++)
                     {
                         if (cities[j].axis_x == city.axis_x && cities[j].axis_y == city.axis_y)
@@ -92,7 +90,6 @@ namespace Travelling_Salesman_Problem___ACO
                         control = false;
                     }               
                 }
-                id++;
             }
             return cities;
         }
@@ -133,20 +130,15 @@ namespace Travelling_Salesman_Problem___ACO
         void walk(Ant ant, double[,] city_distances, double[,] pheromones, List<double> ants_distance_covered, List<int[]> ants_direction)
         {
             Random rnd = new Random();
-
             double distance_covered = 0;
-
             List<int> direction = new List<int>();
-
             int first_city = rnd.Next(0, city_count);
-            direction.Add(first_city); 
-            
+            direction.Add(first_city);            
             for (int i = 0; i < city_count; i++)
             {
                 first_city = direction.Last();
                 double[] cities_probability = calcute_probability(direction,city_distances, pheromones, ant, first_city);
-                double[] cumulative = cumulative_sum(cities_probability);
-               
+                double[] cumulative = cumulative_sum(cities_probability);              
                 bool control = true;           
                 while (control)
                 {
@@ -226,7 +218,8 @@ namespace Travelling_Salesman_Problem___ACO
         {
             for (int i = 0; i < ants_direction.Length-1; i++)
             {
-                pheromones[ants_direction[i], ants_direction[i + 1]] = (1 - evaporation_coefficient) * pheromones[ants_direction[i], ants_direction[i + 1]] + city_distances[ants_direction[i], ants_direction[i + 1]] / ants_distance_covered;
+                pheromones[ants_direction[i], ants_direction[i + 1]] = (1 - evaporation_coefficient) * pheromones[ants_direction[i], ants_direction[i + 1]] + 
+                    city_distances[ants_direction[i], ants_direction[i + 1]] / ants_distance_covered;
             }
         }
 

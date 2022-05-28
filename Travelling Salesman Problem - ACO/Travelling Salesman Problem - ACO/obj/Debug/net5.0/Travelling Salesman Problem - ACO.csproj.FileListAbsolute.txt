@@ -3,7 +3,6 @@ C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\bin\Debug\net5.0\Travelling Salesman Problem - ACO.runtimeconfig.json
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\bin\Debug\net5.0\Travelling Salesman Problem - ACO.runtimeconfig.dev.json
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\bin\Debug\net5.0\Travelling Salesman Problem - ACO.dll
-C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\bin\Debug\net5.0\ref\Travelling Salesman Problem - ACO.dll
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\bin\Debug\net5.0\Travelling Salesman Problem - ACO.pdb
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\Travelling Salesman Problem - ACO.csproj.AssemblyReference.cache
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\Travelling Salesman Problem - ACO.GeneratedMSBuildEditorConfig.editorconfig
@@ -14,3 +13,4 @@ C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\ref\Travelling Salesman Problem - ACO.dll
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\Travelling Salesman Problem - ACO.pdb
 C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\Travelling Salesman Problem - ACO.genruntimeconfig.cache
+C:\Users\arda_\Desktop\Bitirme 2\Travelling-Salesman-Problem\Travelling Salesman Problem - ACO\Travelling Salesman Problem - ACO\obj\Debug\net5.0\refint\Travelling Salesman Problem - ACO.dll
