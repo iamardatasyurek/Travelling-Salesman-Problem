@@ -134,10 +134,10 @@ namespace Travelling_Salesman_Problem___ACO
             List<int> direction = new List<int>();
             int first_city = rnd.Next(0, city_count);
             direction.Add(first_city);            
-            for (int i = 0; i < city_count; i++)
+            for (int i = 1; i < city_count; i++)
             {
-                first_city = direction.Last();
-                double[] cities_probability = calcute_probability(direction,city_distances, pheromones, ant, first_city);
+                int current_city = direction.Last();
+                double[] cities_probability = calcute_probability(direction,city_distances, pheromones, ant, current_city);
                 double[] cumulative = cumulative_sum(cities_probability);              
                 bool control = true;           
                 while (control)
@@ -156,29 +156,11 @@ namespace Travelling_Salesman_Problem___ACO
                     {
                         control = false;
                         direction.Add(next_city);
-                        distance_covered += city_distances[first_city, next_city];
+                        distance_covered += city_distances[current_city, next_city];
                     }
                     else
                         control = true;
-                }
-                if (direction.Count == city_count-1)
-                {
-                    int[] temp = new int[city_count];
-                    for (int k = 0; k < direction.Count; k++)
-                    {
-                        temp[direction[k]]++;
-                    }
-                    for (int j = 0; j < temp.Length; j++)
-                    {
-                        if (temp[j] == 0)
-                        {
-                            direction.Add(j);
-                            break;
-                        }
-                    }
-                    distance_covered += city_distances[direction[city_count - 2], direction[city_count-1]];
-                    break;
-                }              
+                }               
             }
             ants_distance_covered.Add(distance_covered);
             ants_direction.Add(direction.ToArray());
@@ -222,11 +204,6 @@ namespace Travelling_Salesman_Problem___ACO
                     city_distances[ants_direction[i], ants_direction[i + 1]] / ants_distance_covered;
             }
         }
-
-
-
-
-
         void write(double[,] array, int length)
         {
             for (int i = 0; i < length; i++)
