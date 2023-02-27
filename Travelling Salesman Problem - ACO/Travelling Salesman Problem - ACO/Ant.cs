@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Travelling_Salesman_Problem___ACO
+﻿namespace Travelling_Salesman_Problem___ACO
 {
     class Ant
     {
-        public int beta;
-        public int alfa;
-        public Ant(int b, int a)
+        public int Beta { get; set; }
+        public int Alpha { get; set; }
+        public Ant(int beta, int alpha)
         {
-            this.beta = b;
-            this.alfa = a;
+            this.Beta = beta;
+            this.Alpha = alpha;
         }
     }
 }

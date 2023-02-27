@@ -6,7 +6,7 @@ namespace Travelling_Salesman_Problem___ACO
     {
         static void Main(string[] args)
         {
-            Aco aco = new Aco();
+            AntColonyOptimization aco = new AntColonyOptimization(1000, 10,0.5,1.0);
         }
     }
 }
